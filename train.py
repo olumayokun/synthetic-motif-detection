@@ -47,6 +47,14 @@ def train_model():
 
     # 5. The Training Loop
     print("\nStarting Training...")
+
+    # List to track metrics for plotting in the notebook
+    history = {
+        'train_loss': [],
+        'val_loss': [],
+        'val_accuracy': []
+    }
+
     for epoch in range(EPOCHS):
         model.train() # Put model in training mode
         running_loss = 0.0
@@ -96,11 +104,15 @@ def train_model():
         avg_train_loss = running_loss / len(train_loader)
         avg_val_loss = val_loss / len(val_loader)
         val_accuracy = (correct_predictions / total_predictions) * 100
+
+        history['train_loss'].append(avg_train_loss)
+        history['val_loss'].append(avg_val_loss)
+        history['val_accuracy'].append(val_accuracy)
         
         print(f"Epoch {epoch+1}/{EPOCHS} | Train Loss: {avg_train_loss:.4f} | Val Loss: {avg_val_loss:.4f} | Val Accuracy: {val_accuracy:.2f}%")
 
     print("\n✅ Training Complete!")
-    return model
+    return model, history
 
 if __name__ == "__main__":
     trained_model = train_model()
